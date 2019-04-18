@@ -3,7 +3,13 @@ package com.lions.shen60.body.entity;
 import com.lions.shen60.header.base.bean.BaseEntity;
 
 import javax.persistence.Entity;
-
+/**
+ * @author      : shenbo33@qq.com
+ * @date        : Created in 2019/4/14  11:02
+ * @description : SysMenu 菜单
+ * @modified By :
+ * @version     : version 1.0
+ */
 @Entity
 public class SysMenu extends BaseEntity {
 

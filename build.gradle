@@ -19,6 +19,14 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation 'org.springframework.boot:spring-boot-starter-aop'
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	implementation 'org.springframework.boot:spring-boot-starter-security'
+	implementation 'org.springframework.boot:spring-boot-starter-data-redis'
 	implementation 'mysql:mysql-connector-java'
+	implementation 'com.alibaba:druid:1.1.8' // 数据池管理
+	implementation 'org.projectlombok:lombok' // 实体类自动生成注解
+	implementation 'com.alibaba:fastjson:1.2.36'
+	implementation 'io.jsonwebtoken:jjwt'
+
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+
 }

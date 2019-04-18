@@ -6,17 +6,26 @@ import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
+/**
+ * @author      : shenbo33@qq.com
+ * @date        : Created in 2019/4/14  11:10
+ * @description : SysRole 角色
+ * @modified By :
+ * @version     : version 1.0
+ */
 @Entity
-public class Role extends BaseEntity {
+public class SysRole extends BaseEntity {
 
     private String name;
 
     @ManyToMany
     @JoinTable(name="sys_role_menu_relation",
             joinColumns ={@JoinColumn(name="roleId")}, inverseJoinColumns = {@JoinColumn(name="menuId")})
-    private List<SysMenu> sysMenus;
+    private Set<SysMenu> sysMenus = new HashSet<>();
 
     public String getName() {
         return name;
@@ -26,11 +35,11 @@ public class Role extends BaseEntity {
         this.name = name;
     }
 
-    public List<SysMenu> getSysMenus() {
+    public Set<SysMenu> getSysMenus() {
         return sysMenus;
     }
 
-    public void setSysMenus(List<SysMenu> sysMenus) {
+    public void setSysMenus(Set<SysMenu> sysMenus) {
         this.sysMenus = sysMenus;
     }
 }

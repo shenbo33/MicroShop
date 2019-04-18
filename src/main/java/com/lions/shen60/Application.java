@@ -1,6 +1,6 @@
 package com.lions.shen60;
 
-import com.lions.shen60.header.common.config.factory.BaseRepositoryFactoryBean;
+import com.lions.shen60.header.base.factory.BaseRepositoryFactoryBean;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;

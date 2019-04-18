@@ -4,8 +4,15 @@ import com.lions.shen60.header.base.bean.BaseEntity;
 
 import javax.persistence.Entity;
 
+/**
+ * @author      : shenbo33@qq.com
+ * @date        : Created in 2019/4/14  10:59
+ * @description : InfProfession 行业
+ * @modified By :
+ * @version     : version 1.0
+ */
 @Entity
-public class Profession extends BaseEntity {
+public class InfProfession extends BaseEntity {
 
     private String pId;
     private String name;

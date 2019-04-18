@@ -1,38 +1,39 @@
 package com.lions.shen60.body.entity;
 
 import com.lions.shen60.header.base.bean.BaseEntity;
+import lombok.*;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import java.util.Date;
+/**
+ * @author      : shenbo33@qq.com
+ * @date        : Created in 2019/4/14  11:00
+ * @description : InfUser 人员信息
+ * @modified By :
+ * @version     : version 1.0
+ */
 
+@Data
 @Entity
-public class User extends BaseEntity {
+public class InfPerson extends BaseEntity {
 
     private String name;
     private Date birthday;
 
     @OneToOne(cascade = CascadeType.ALL, optional = false)
     @JoinColumn(name = "addressId")
-    private Address address;
+    private InfAddress address;
     private String tel;
     private String sex;
     private String hobby;
 
     @OneToOne(cascade = CascadeType.REFRESH, optional = false)
     @JoinColumn(name = "professionId")
-    private Profession profession; // 所属行业
+    private InfProfession profession; // 所属行业
     private int income; // 输入
-
-    public Profession getProfession() {
-        return profession;
-    }
-
-    public void setProfession(Profession profession) {
-        this.profession = profession;
-    }
 
     public String getName() {
         return name;
@@ -50,11 +51,11 @@ public class User extends BaseEntity {
         this.birthday = birthday;
     }
 
-    public Address getAddress() {
+    public InfAddress getAddress() {
         return address;
     }
 
-    public void setAddress(Address address) {
+    public void setAddress(InfAddress address) {
         this.address = address;
     }
 
@@ -80,6 +81,14 @@ public class User extends BaseEntity {
 
     public void setHobby(String hobby) {
         this.hobby = hobby;
+    }
+
+    public InfProfession getProfession() {
+        return profession;
+    }
+
+    public void setProfession(InfProfession profession) {
+        this.profession = profession;
     }
 
     public int getIncome() {
