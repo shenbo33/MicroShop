@@ -1,13 +1,5 @@
 package com.lions.shen60.header.common.Enums;
 
-import lombok.Getter;
-
-/**
- * @author: zzx
- * @date: 2018/10/15 15:16
- * @description: 返回的错误码枚举类
- */
-@Getter
 public enum ResultEnum {
 
     SUCCESS(101,"成功"),
@@ -27,6 +19,22 @@ public enum ResultEnum {
 
     ResultEnum(Integer code, String message) {
         this.code = code;
+        this.message = message;
+    }
+
+    public Integer getCode() {
+        return code;
+    }
+
+    public void setCode(Integer code) {
+        this.code = code;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
         this.message = message;
     }
 

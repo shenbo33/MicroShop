@@ -11,26 +11,32 @@ import javax.validation.constraints.NotEmpty;
 import java.util.*;
 
 @Entity
-@Table(appliesTo = "sys_user",comment = "角色权限表")
+@Table(appliesTo = "sys_user",comment = "系统用户表")
 public class SysUser extends BaseEntity implements UserDetails{
 
     @NotEmpty(message = "登陆名不能为空")
-    @Column(nullable = false, columnDefinition = "varchar(32) comment '登陆名'")
+    @Column(nullable = false, unique = true, columnDefinition = "varchar(36) comment '登陆名'")
     private String username;
+    @Column(nullable = false, columnDefinition = "varchar(128) comment '密码'")
     private String password;
+    @Column(nullable = false, columnDefinition = "varchar(5) comment '状态'")
     private String state;
-    @ManyToMany
-    @JoinTable(name="sys_user_organize_relation",
-            joinColumns ={@JoinColumn(name="userId")}, inverseJoinColumns = {@JoinColumn(name="organizeId")})
-    private Set<SysOrganize> organizes = new HashSet();
 
+    @OneToOne(cascade = CascadeType.REFRESH)
+    @JoinColumn(name = "professionId", columnDefinition = "varchar(36) comment '人员id'")
+    private InfPerson person;
+
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, targetEntity = SysRole.class)
+    @JoinTable(name="sys_user_organize_relation",
+            joinColumns ={@JoinColumn(name="userId", columnDefinition =  "varchar(36) comment '用户ID'" )},
+            inverseJoinColumns = {@JoinColumn(name="organizeId", columnDefinition =  "varchar(36) comment '组织机构ID'")})
+    private Set<SysOrganize> organizes = new HashSet();
 
     @ManyToMany
     @JoinTable(name="sys_user_role_relation",
-            joinColumns ={@JoinColumn(name="userId")}, inverseJoinColumns = {@JoinColumn(name="roleId")})
+            joinColumns ={@JoinColumn(name="userId", columnDefinition =  "varchar(36) comment '用户ID'" )},
+            inverseJoinColumns = {@JoinColumn(name="roleId", columnDefinition =  "varchar(36) comment '角色ID'" )})
     private Set<SysRole> roles = new HashSet();
-
-    private InfPerson person;
 
     public String getState() {
         return state;
@@ -64,6 +70,7 @@ public class SysUser extends BaseEntity implements UserDetails{
         this.person = person;
     }
 
+    @Transient
     private Set<? extends GrantedAuthority> authorities;
 
     @Override

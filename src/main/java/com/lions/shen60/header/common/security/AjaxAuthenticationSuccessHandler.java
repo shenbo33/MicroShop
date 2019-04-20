@@ -55,7 +55,7 @@ public class AjaxAuthenticationSuccessHandler implements AuthenticationSuccessHa
         //获取请求的ip地址
         String currentIp = AccessAddressUtil.getIpAddress(httpServletRequest);
         redisUtil.setTokenRefresh(jwtToken,sysUser.getUsername(),currentIp);
-        log.info("用户{}登录成功, 信息已保存至redis ", sysUser.getUsername());
+//        log.info("用户{}登录成功, 信息已保存至redis ", sysUser.getUsername());
 
         httpServletResponse.getWriter().write(JSON.toJSONString(ResultVO.result(ResultEnum.USER_LOGIN_SUCCESS,jwtToken,true)));
 

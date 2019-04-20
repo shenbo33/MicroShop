@@ -11,6 +11,6 @@ public interface UserRepository extends JpaRepository<SysUser,Integer> {
     /**
      * 原来JPARepository的方法依然可以使用
      **/
-    @Query("select t from sys_user  t where t.name = :name")
-    SysUser findUserByName(@Param("name")String name);
+    @Query("select t from SysUser t where t.username = ?1")
+    SysUser findUserByName(@Param("username")String username);
 }

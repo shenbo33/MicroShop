@@ -12,16 +12,20 @@ public class BaseEntity implements Serializable {
     @Id
     @GenericGenerator(name = "system-uuid", strategy = "uuid2")
     @GeneratedValue(generator = "system-uuid")
+    @Column(columnDefinition = "varchar(36) comment '主键' ")
     private String id;
-
-    @Column(updatable = false)
+    @Column(columnDefinition = "timestamp comment '更新时间' ")
     private Date modifyTime;
+    @Column(columnDefinition = "varchar(36) comment '更新用户' ")
     private String modifyUser;
-
+    @Column(updatable = false, columnDefinition = "timestamp comment '创建时间' ")
     private Date createTime;
+    @Column(updatable = false, columnDefinition = "varchar(36) comment '创建用户' ")
     private String createUser;
+
+    @Column(columnDefinition = "varchar(128) comment '备注' ")
     private String remark;
-    @Column(columnDefinition = "char default 0 ")
+    @Column(columnDefinition = "char comment '是否删除' default 0 ")
     private char isDelete;
 
     public String getId() {

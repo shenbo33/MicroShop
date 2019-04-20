@@ -24,10 +24,10 @@ public class UserService implements UserDetailsService {
     @Autowired
     private UserRepository userRepository;
 
-    public SysUser findUserByName(String name) {
+    public SysUser findUserByName(String username) {
         SysUser user = null;
         try {
-            user = userRepository.findUserByName(name);
+            user = userRepository.findUserByName(username);
         } catch (Exception e) {
             e.printStackTrace();
         }

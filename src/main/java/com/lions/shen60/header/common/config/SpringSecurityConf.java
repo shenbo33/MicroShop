@@ -15,27 +15,19 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @Configuration
 public class SpringSecurityConf extends WebSecurityConfigurerAdapter {
 
+    private AjaxAuthenticationEntryPoint authenticationEntryPoint;//未登陆时返回 JSON 格式的数据给前端（否则为 html）
 
+    private AjaxAuthenticationSuccessHandler authenticationSuccessHandler; //登录成功返回的 JSON 格式数据给前端（否则为 html）
 
-    AjaxAuthenticationEntryPoint authenticationEntryPoint;//未登陆时返回 JSON 格式的数据给前端（否则为 html）
+    private AjaxAuthenticationFailureHandler authenticationFailureHandler; //登录失败返回的 JSON 格式数据给前端（否则为 html）
 
+    private AjaxLogoutSuccessHandler logoutSuccessHandler;//注销成功返回的 JSON 格式数据给前端（否则为 登录时的 html）
 
-    AjaxAuthenticationSuccessHandler authenticationSuccessHandler; //登录成功返回的 JSON 格式数据给前端（否则为 html）
+    private AjaxAccessDeniedHandler accessDeniedHandler;//无权访问返回的 JSON 格式数据给前端（否则为 403 html 页面）
 
+    private UserService userService; // 自定义user
 
-    AjaxAuthenticationFailureHandler authenticationFailureHandler; //登录失败返回的 JSON 格式数据给前端（否则为 html）
-
-
-    AjaxLogoutSuccessHandler logoutSuccessHandler;//注销成功返回的 JSON 格式数据给前端（否则为 登录时的 html）
-
-
-    AjaxAccessDeniedHandler accessDeniedHandler;//无权访问返回的 JSON 格式数据给前端（否则为 403 html 页面）
-
-
-    UserService userService; // 自定义user
-
-
-    JwtAuthenticationTokenFilter jwtAuthenticationTokenFilter; // JWT 拦截器
+    private JwtAuthenticationTokenFilter jwtAuthenticationTokenFilter; // JWT 拦截器
 
     @Autowired
     public SpringSecurityConf(AjaxAuthenticationEntryPoint authenticationEntryPoint,
@@ -43,13 +35,15 @@ public class SpringSecurityConf extends WebSecurityConfigurerAdapter {
                               AjaxAuthenticationFailureHandler authenticationFailureHandler,
                               AjaxLogoutSuccessHandler logoutSuccessHandler,
                               AjaxAccessDeniedHandler accessDeniedHandler,
-                              UserService userService){
+                              UserService userService,
+                              JwtAuthenticationTokenFilter jwtAuthenticationTokenFilter){
         super();
         this.authenticationEntryPoint = authenticationEntryPoint;
         this.authenticationSuccessHandler = authenticationSuccessHandler;
         this.authenticationFailureHandler = authenticationFailureHandler;
         this.logoutSuccessHandler = logoutSuccessHandler;
         this.accessDeniedHandler = accessDeniedHandler;
+        this.jwtAuthenticationTokenFilter = jwtAuthenticationTokenFilter;
         this.userService = userService;
     };
 
@@ -90,8 +84,7 @@ public class SpringSecurityConf extends WebSecurityConfigurerAdapter {
                 .permitAll();
 
         // 记住我
-        http.rememberMe().rememberMeParameter("remember-me")
-                .userDetailsService(userService).tokenValiditySeconds(1000);
+        http.rememberMe().rememberMeParameter("remember-me").userDetailsService(userService).tokenValiditySeconds(1000);
 
         http.exceptionHandling().accessDeniedHandler(accessDeniedHandler); // 无权访问 JSON 格式的数据
         http.addFilterBefore(jwtAuthenticationTokenFilter, UsernamePasswordAuthenticationFilter.class); // JWT Filter

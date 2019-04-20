@@ -1,10 +1,11 @@
 package com.lions.shen60.header.common.filters;
 
 import com.alibaba.fastjson.JSON;
-import com.deceen.common.Enums.ResultEnum;
-import com.deceen.common.VO.ResultVO;
-import com.deceen.common.utils.*;
-import com.deceen.demo.service.SelfUserDetailsService;
+import com.lions.shen60.body.entity.SysUser;
+import com.lions.shen60.body.service.UserService;
+import com.lions.shen60.header.common.Enums.ResultEnum;
+import com.lions.shen60.header.common.VO.ResultVO;
+import com.lions.shen60.header.common.utils.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -40,7 +41,7 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
     private int validTime;
 
     @Autowired
-    SelfUserDetailsService userDetailsService;
+    UserService userService;
 
     @Autowired
     RedisUtil redisUtil;
@@ -59,7 +60,7 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
 
             //进入黑名单验证
             if (redisUtil.isBlackList(authToken)) {
-                log.info("用户：{}的token：{}在黑名单之中，拒绝访问",username,authToken);
+//                log.info("用户：{}的token：{}在黑名单之中，拒绝访问",username,authToken);
                 response.getWriter().write(JSON.toJSONString(ResultVO.result(ResultEnum.TOKEN_IS_BLACKLIST, false)));
                 return;
             }
@@ -76,13 +77,13 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
                     String tokenValidTime = (String) redisUtil.getTokenValidTimeByToken(authToken);
                     String currentTime = DateUtil.getTime();
                     //这个token已作废，加入黑名单
-                    log.info("{}已作废，加入黑名单",authToken);
+//                    log.info("{}已作废，加入黑名单",authToken);
                     redisUtil.hset("blacklist", authToken, DateUtil.getTime());
 
                     if (DateUtil.compareDate(currentTime, tokenValidTime)) {
 
                         //超过有效期，不予刷新
-                        log.info("{}已超过有效期，不予刷新",authToken);
+//                        log.info("{}已超过有效期，不予刷新",authToken);
                         response.getWriter().write(JSON.toJSONString(ResultVO.result(ResultEnum.LOGIN_IS_OVERDUE, false)));
                         return;
                     } else {//仍在刷新时间内，则刷新token，放入请求头中
@@ -105,7 +106,7 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
                         //新的token保存到redis中
                         redisUtil.setTokenRefresh(jwtToken,username,ip);
 
-                        log.info("redis已删除旧token：{},新token：{}已更新redis",authToken,jwtToken);
+//                        log.info("redis已删除旧token：{},新token：{}已更新redis",authToken,jwtToken);
                         authToken = jwtToken;//更新token，为了后面
                         response.setHeader("Authorization", "Bearer " + jwtToken);
                     }
@@ -120,18 +121,17 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
                  * 如果ip不正确，进入黑名单验证
                  */
                 if (!StringUtil.equals(ip, currentIp)) {//地址不正确
-                    log.info("用户：{}的ip地址变动，进入黑名单校验",username);
+//                    log.info("用户：{}的ip地址变动，进入黑名单校验",username);
                     //进入黑名单验证
                     if (redisUtil.isBlackList(authToken)) {
-                        log.info("用户：{}的token：{}在黑名单之中，拒绝访问",username,authToken);
+//                        log.info("用户：{}的token：{}在黑名单之中，拒绝访问",username,authToken);
                         response.getWriter().write(JSON.toJSONString(ResultVO.result(ResultEnum.TOKEN_IS_BLACKLIST, false)));
                         return;
                     }
                     //黑名单没有则继续，如果黑名单存在就退出后面
                 }
 
-
-                UserDetails userDetails = userDetailsService.loadUserByUsername(username);
+                UserDetails userDetails = userService.loadUserByUsername(username);
                 if (userDetails != null) {
                     UsernamePasswordAuthenticationToken authentication =
                             new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());

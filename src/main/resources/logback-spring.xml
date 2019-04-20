@@ -27,7 +27,7 @@
         <!--滚动策略：每天滚动生成-->
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
             <!--保存路径-->
-            <fileNamePattern>E:\workSpace\springbootTest\seller\log\info.%d.log</fileNamePattern>
+            <fileNamePattern>F:\01_Projects\09_Log\MicroShop\seller\log\info.%d.log</fileNamePattern>
         </rollingPolicy>
     </appender>
 
@@ -44,7 +44,7 @@
         <!--滚动策略-->
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
             <!--保存路径-->
-            <fileNamePattern>E:\workSpace\springbootTest\seller\log\error.%d.log</fileNamePattern>
+            <fileNamePattern>F:\01_Projects\09_Log\MicroShop\seller\log\error.%d.log</fileNamePattern>
         </rollingPolicy>
     </appender>
 
